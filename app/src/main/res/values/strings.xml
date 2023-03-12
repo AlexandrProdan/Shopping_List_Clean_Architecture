@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Shopping List Clean Architecture</string>
+    <string name="add_an_item_to_list">Add an item to list</string>
 </resources>
