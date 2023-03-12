@@ -1,15 +1,19 @@
 package com.example.shoppinglistcleanarchitecture.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.shoppinglistcleanarchitecture.domain.ShoppingItem
 import com.example.shoppinglistcleanarchitecture.domain.ShoppingListRepository
 
 object ShoppingListRepositoryImpl : ShoppingListRepository {
     private val shopList = mutableListOf<ShoppingItem>()
+    private val shopListLD = MutableLiveData<List<ShoppingItem>>()
+
     var autoIncrementId = 0
 
 
     init {
-        for (i in 0..10){
+        for (i in 0..10) {
             val item = ShoppingItem("Name $i", 0, true)
             addShoppingItem(item)
         }
@@ -17,10 +21,11 @@ object ShoppingListRepositoryImpl : ShoppingListRepository {
 
 
     override fun addShoppingItem(shoppingItem: ShoppingItem) {
-        if (shoppingItem.id == ShoppingItem.UNDEFINED_ID){
+        if (shoppingItem.id == ShoppingItem.UNDEFINED_ID) {
             shoppingItem.id = autoIncrementId++
         }
         shopList.add(shoppingItem)
+        updateList()
     }
 
     override fun editShopItem(shoppingItem: ShoppingItem) {
@@ -29,8 +34,9 @@ object ShoppingListRepositoryImpl : ShoppingListRepository {
         addShoppingItem(shoppingItem)
     }
 
-    override fun getShoppingList(): List<ShoppingItem> {
-        return shopList.toList()
+    override fun getShoppingList(): LiveData<List<ShoppingItem>> {
+        updateList()
+        return shopListLD
     }
 
     override fun getShoppingItemById(id: Int): ShoppingItem {
@@ -40,6 +46,10 @@ object ShoppingListRepositoryImpl : ShoppingListRepository {
 
     override fun removeItem(shoppingItem: ShoppingItem) {
         shopList.remove(shoppingItem)
+        updateList()
     }
 
+    fun updateList() {
+        shopListLD.value = shopList.toList()
+    }
 }

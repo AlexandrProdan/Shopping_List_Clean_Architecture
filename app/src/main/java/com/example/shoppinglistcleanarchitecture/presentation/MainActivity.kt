@@ -17,12 +17,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModel.shopList.observe(this, Observer {
+        viewModel.shopList.observe(this){
             Log.d(TAG, it.toString())
-        })
-        viewModel.getShopList()
-        viewModel.removeItem(ShoppingItem("Name 0", 0, true, 0))
-
+        }
 
     }
 }
