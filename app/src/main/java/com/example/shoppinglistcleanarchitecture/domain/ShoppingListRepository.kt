@@ -5,9 +5,9 @@ interface ShoppingListRepository {
 
     fun editShopItem(shoppingItem: ShoppingItem)
 
-    fun getShoppingList(): ShoppingItem
+    fun getShoppingList(): List<ShoppingItem>
 
-    fun getShoppingItemById(id: String): ShoppingItem
+    fun getShoppingItemById(id: Int): ShoppingItem
 
-    fun removeItem(id: Int)
+    fun removeItem(shoppingItem: ShoppingItem)
 }
